@@ -22,6 +22,19 @@ Adicione um método chamado limpar_historico() que limpa o histórico de operaç
 <<<"""
 from functools import reduce
 
+def somar(a, b):
+    return a + b
+
+def formar_expressao(*numeros, operador="+"):
+    expressao = ""
+
+    for numero in numeros:
+        expressao += (str(numero)) # adicionando à expressão do histórico
+        if numero != numeros[-1]:
+            expressao += f" {operador} " # enquanto não for o último número da expressão, adiciona o operador + à expressão
+    
+    return expressao
+
 class Calculadora:
 
     def __init__(self): 
@@ -29,18 +42,13 @@ class Calculadora:
     
     # adição
     def adicionar(self, *numeros):
-        total = 0
+        operador = "+"
         expressao = ""
-        
-        # adicionar os números um por um ao total(resultado da operação) e na expressão que será salva no histórico
-        for numero in numeros:
-            expressao += (str(numero)) # adicionando à expressão do histórico
-            if numero != numeros[-1]:
-                expressao += " + " # enquanto não for o último número da expressão, adiciona o operador + à expressão
 
-            total += numero # somando os valores
+        total = reduce(somar, numeros)
 
-        expressao += f" = {total}"
+        expressao = formar_expressao(numeros, operador)
+
         self.historico.append(expressao) # envia a expressão para o histórico
 
         print(f"\n{expressao}\n")
